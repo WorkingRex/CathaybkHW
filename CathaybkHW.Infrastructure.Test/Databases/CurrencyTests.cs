@@ -1,4 +1,4 @@
-﻿using CathaybkHW.Domain.Currency.Entities;
+﻿using CathaybkHW.Domain.Entities.Currency;
 using CathaybkHW.Infrastructure.Databases;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;

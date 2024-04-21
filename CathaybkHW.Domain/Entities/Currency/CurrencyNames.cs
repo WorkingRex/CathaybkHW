@@ -1,4 +1,4 @@
-﻿namespace CathaybkHW.Domain.Currency.Entities;
+﻿namespace CathaybkHW.Domain.Entities.Currency;
 
 public class CurrencyName
 {
