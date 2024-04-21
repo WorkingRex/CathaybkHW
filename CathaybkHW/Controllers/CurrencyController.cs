@@ -1,6 +1,7 @@
-﻿using CathaybkHW.Infrastructure.Databases;
+﻿using CathaybkHW.Application.Result;
+using CathaybkHW.Application.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CathaybkHW.Controllers
 {
@@ -8,30 +9,19 @@ namespace CathaybkHW.Controllers
     [Route("api/[controller]")]
     public class CurrencyController : Controller
     {
-        private readonly CathaybkHWDBContext _dbContext;
+        private readonly IMediator _mediator;
 
-        public CurrencyController(CathaybkHWDBContext dbContext)
+        public CurrencyController(IMediator mediator)
         {
-            _dbContext = dbContext;
+            _mediator = mediator;
         }
 
-        [HttpGet]
-        async public Task<IActionResult> List()
+        [HttpGet("CurrencyRateList")]
+        public async Task<IEnumerable<CurrencyInfoResult>> GetCurrencyInfo()
         {
-            var list = await _dbContext.Currencies
-                .Include(e => e.Names)
-                .Select(e => new
-                {
-                    Code = e.Code,
-                    Names = e.Names.Select(n => new
-                    {
-                        Language = n.Language,
-                        Name = n.Name
-                    })
-                })
-                .ToArrayAsync();
-
-            return Ok(list);
+            var query = new CurrencyInfoListQuery();
+            var result = await _mediator.Send(query);
+            return result;
         }
     }
 }

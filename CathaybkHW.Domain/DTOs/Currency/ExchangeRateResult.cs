@@ -2,12 +2,7 @@
 
 public class ExchangeRateResult
 {
+    public string CurrencyCode { get; set; } = null!;
     public decimal Rate { get; set; }
     public DateTime LastUpdated { get; set; }
-
-    public ExchangeRateResult(decimal rate, DateTime lastUpdated)
-    {
-        Rate = rate;
-        LastUpdated = lastUpdated;
-    }
 }

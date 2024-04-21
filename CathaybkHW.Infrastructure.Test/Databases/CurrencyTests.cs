@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CathaybkHW.Infrastructure.Test.Databases;
 
-public class CurrencyTests
+internal class CurrencyTests
 {
     private DbContextOptions<CathaybkHWDBContext> dbContextOptions;
     private SqliteConnection connection;
@@ -58,7 +58,7 @@ public class CurrencyTests
     {
         using var context = new CathaybkHWDBContext(dbContextOptions);
         var exists = context.Currencies.Any(c => c.Code == "USD");
-        Assert.That(exists, Is.True, "應該存在代碼為 'USD' 的貨幣");
+        Assert.That(exists, Is.True);
     }
 
     [Test]
@@ -66,14 +66,14 @@ public class CurrencyTests
     {
         using var context = new CathaybkHWDBContext(dbContextOptions);
         var currencyName = context.CurrencyNames.FirstOrDefault(n => n.Code == "USD" && n.Language == "zh-TW");
-        Assert.That(currencyName, Is.Not.Null, "查詢的貨幣名稱不應該為 null");
+        Assert.That(currencyName, Is.Not.Null);
         currencyName.Name = "美金";
         context.CurrencyNames.Update(currencyName);
         context.SaveChanges();
 
         var updatedName = context.CurrencyNames.FirstOrDefault(n => n.Code == "USD" && n.Language == "zh-TW");
-        Assert.That(updatedName, Is.Not.Null, "更新後的貨幣名稱不應該為 null");
-        Assert.That(updatedName.Name, Is.EqualTo("美金"), "貨幣名稱應更新為 '美金'");
+        Assert.That(updatedName, Is.Not.Null);
+        Assert.That(updatedName.Name, Is.EqualTo("美金"));
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class CurrencyTests
     {
         using var context = new CathaybkHWDBContext(dbContextOptions);
         var currency = context.Currencies.FirstOrDefault(c => c.Code == "JPY");
-        Assert.That(currency, Is.Not.Null, "查詢的貨幣不應該為 null");
+        Assert.That(currency, Is.Not.Null);
         context.Currencies.Remove(currency);
         context.SaveChanges();
 
@@ -89,8 +89,8 @@ public class CurrencyTests
         var namesExist = context.CurrencyNames.Any(n => n.Code == "JPY");
         Assert.Multiple(() =>
         {
-            Assert.That(exists, Is.False, "JPY 貨幣應該被刪除");
-            Assert.That(namesExist, Is.False, "相關的貨幣名稱也應該隨之被刪除，以級聯刪除");
+            Assert.That(exists, Is.False);
+            Assert.That(namesExist, Is.False);
         });
     }
 
@@ -111,7 +111,7 @@ public class CurrencyTests
         await context.SaveChangesAsync();
 
         var count = context.CurrencyNames.Count(n => n.Code == "GBP");
-        Assert.That(count, Is.EqualTo(2), "'GBP' 應該有兩個貨幣名稱");
+        Assert.That(count, Is.EqualTo(2));
     }
 
     [Test]
@@ -125,6 +125,6 @@ public class CurrencyTests
             context.SaveChanges();
         });
 
-        Assert.That(ex.InnerException, Is.TypeOf<Microsoft.Data.Sqlite.SqliteException>(), "應該拋出 SQLite 異常，因為代碼重複");
+        Assert.That(ex.InnerException, Is.TypeOf<Microsoft.Data.Sqlite.SqliteException>());
     }
 }

@@ -1,3 +1,4 @@
+using CathaybkHW.Extensions;
 using CathaybkHW.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddDBContext(builder.Configuration)
     .RegisterHttpClient(builder.Configuration);
+
+builder.Services.AddServices();
 
 var app = builder.Build();
 
