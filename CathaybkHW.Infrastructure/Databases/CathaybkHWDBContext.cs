@@ -25,7 +25,8 @@ public class CathaybkHWDBContext: DbContext
 
             entity.HasOne(e => e.Currency)
                 .WithMany(e => e.Names)
-                .HasForeignKey(e => e.Code);
+                .HasForeignKey(e => e.Code)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

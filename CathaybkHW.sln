@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CathaybkHW", "CathaybkHW\CathaybkHW.csproj", "{3F1ACB2D-DD93-4F06-8CD8-09284564C28F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CathaybkHW.Infrastructure", "CathaybkHW.Infrastructure\CathaybkHW.Infrastructure.csproj", "{D79A70EC-5E85-41F2-9F32-12202166955D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CathaybkHW.Infrastructure", "CathaybkHW.Infrastructure\CathaybkHW.Infrastructure.csproj", "{D79A70EC-5E85-41F2-9F32-12202166955D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CathaybkHW.Infrastructure.Test", "CathaybkHW.Infrastructure.Test\CathaybkHW.Infrastructure.Test.csproj", "{97EBC059-A105-4264-B6CD-6B7BA745E14D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D79A70EC-5E85-41F2-9F32-12202166955D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D79A70EC-5E85-41F2-9F32-12202166955D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D79A70EC-5E85-41F2-9F32-12202166955D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97EBC059-A105-4264-B6CD-6B7BA745E14D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97EBC059-A105-4264-B6CD-6B7BA745E14D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97EBC059-A105-4264-B6CD-6B7BA745E14D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97EBC059-A105-4264-B6CD-6B7BA745E14D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
