@@ -1,4 +1,4 @@
-﻿using CathaybkHW.Infrastructure.Databases.Entities;
+﻿using CathaybkHW.Domain.Currency.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CathaybkHW.Infrastructure.Databases;

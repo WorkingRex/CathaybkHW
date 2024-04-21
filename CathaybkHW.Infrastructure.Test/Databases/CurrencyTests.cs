@@ -1,13 +1,7 @@
-﻿using CathaybkHW.Infrastructure.Databases;
-using CathaybkHW.Infrastructure.Databases.Entities;
+﻿using CathaybkHW.Domain.Currency.Entities;
+using CathaybkHW.Infrastructure.Databases;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CathaybkHW.Infrastructure.Test.Databases;
 
