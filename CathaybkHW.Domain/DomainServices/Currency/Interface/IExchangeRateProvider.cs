@@ -4,5 +4,5 @@ namespace CathaybkHW.Domain.DomainServices.Currency.Interface;
 
 public interface IExchangeRateProvider
 {
-    Task<IEnumerable<ExchangeRateResult>> GetRate();
+    Task<IEnumerable<ExchangeRate>> GetRate();
 }

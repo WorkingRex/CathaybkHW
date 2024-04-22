@@ -25,16 +25,18 @@ public class CurrencyInfoListQueryHandler : IRequestHandler<CurrencyInfoListQuer
         var currencyRates = await _exchangeRateProvider.GetRate();
         var currencyNames = await _currencyRepository.GetCurrencyName();
 
+        var currencyNameGroup = currencyNames.GroupBy(x => x.Code);
+
         var result = (
             from rate in currencyRates
-            join name in currencyNames on rate.CurrencyCode equals name.CurrencyCode into temps
+            join name in currencyNameGroup on rate.CurrencyCode equals name.Key into temps
             from name in temps.DefaultIfEmpty()
             select new CurrencyInfoResult
             {
                 Code = rate.CurrencyCode,
                 ExchangeRate = rate.Rate,
                 UpdatedTime = rate.LastUpdated.ToString("yyyy/MM/dd HH:mm:ss"),
-                Names = name?.Names.Select(x => new CurrencyNameResult
+                Names = name?.Select(x => new CurrencyNameResult
                 {
                     Language = x.Language,
                     Name = x.Name

@@ -1,7 +1,9 @@
 ﻿using CathaybkHW.Application.Services;
 using CathaybkHW.Domain.DomainServices.Currency.Interface;
-using CathaybkHW.Domain.DTOs.Currency;
 using Moq;
+
+using DTOs = CathaybkHW.Domain.DTOs.Currency;
+using Entities = CathaybkHW.Domain.Entities.Currency;
 
 namespace CathaybkHW.Application.Test.Services;
 
@@ -18,22 +20,22 @@ internal class CurrencyInfoListQueryHandlerTests
         _exchangeRateProviderMock = new Mock<IExchangeRateProvider>();
 
         _currencyRepositoryMock.Setup(x => x.GetCurrencyName())
-            .ReturnsAsync(new List<CurrencyNameResult>
+            .ReturnsAsync(new List<Entities.CurrencyName>
             {
-                new CurrencyNameResult
-                {
-                    CurrencyCode = "USD",
-                    Names = [new CurrencyNameDetail { Language = "en", Name = "Dollar" }]
+                new() {
+                    Code = "USD",
+                    Language = "en",
+                    Name = "Dollar"
                 },
-                new CurrencyNameResult
-                {
-                    CurrencyCode = "EUR",
-                    Names = [new CurrencyNameDetail { Language = "en", Name = "Euro" }]
+                new() {
+                    Code = "EUR",
+                    Language = "en",
+                    Name = "Euro"
                 }
             });
 
         _exchangeRateProviderMock.Setup(x => x.GetRate())
-            .ReturnsAsync(new List<ExchangeRateResult>
+            .ReturnsAsync(new List<DTOs.ExchangeRate>
             {
                 new() { CurrencyCode = "USD", Rate = 30.1m, LastUpdated = DateTime.Now },
             });

@@ -1,85 +1,123 @@
-﻿using CathaybkHW.Domain.DTOs.Currency;
-using CathaybkHW.Domain.Entities.Currency;
+﻿using CathaybkHW.Domain.Entities.Currency;
 using CathaybkHW.Infrastructure.Databases;
 using CathaybkHW.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CathaybkHW.Infrastructure.Test.Repositories;
 
 public class CurrencyRepositoryTests
 {
-    private DbContextOptions<CathaybkHWDBContext> dbContextOptions;
-    private SqliteConnection connection;
+    private DbContextOptions<CathaybkHWDBContext> _dbContextOptions;
+    private SqliteConnection _connection;
+    private CathaybkHWDBContext _dbContext;
+    private CurrencyRepository _repository;
 
     [SetUp]
     public void Setup()
     {
-        connection = new SqliteConnection("DataSource=:memory:");
-        connection.Open();
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
 
-        dbContextOptions = new DbContextOptionsBuilder<CathaybkHWDBContext>()
-            .UseSqlite(connection)
+        _dbContextOptions = new DbContextOptionsBuilder<CathaybkHWDBContext>()
+            .UseSqlite(_connection)
             .Options;
 
-        using var context = new CathaybkHWDBContext(dbContextOptions);
-        context.Database.EnsureDeleted();
+        using var context = new CathaybkHWDBContext(_dbContextOptions);
         context.Database.EnsureCreated();
 
-        // Seed the database
-        context.Currencies.Add(new Currency
-        {
-            Code = "USD",
-            Names = new List<CurrencyName>
-            {
-                new CurrencyName { Language = "en", Name = "Dollar" }
-            }
-        });
-        context.Currencies.Add(new Currency
-        {
-            Code = "EUR",
-            Names = new List<CurrencyName>
-            {
-                new CurrencyName { Language = "en", Name = "Euro" }
-            }
-        });
+        context.CurrencyNames.AddRange(
+            new Domain.Entities.Currency.CurrencyName { Code = "USD", Language = "en", Name = "Dollar" },
+            new Domain.Entities.Currency.CurrencyName { Code = "EUR", Language = "en", Name = "Euro" }
+        );
         context.SaveChanges();
+
+        _dbContext = new CathaybkHWDBContext(_dbContextOptions);
+
+        _repository = new CurrencyRepository(_dbContext);
     }
 
     [TearDown]
     public void Cleanup()
     {
-        connection.Close();
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
+        _connection.Close();
     }
+
 
     [Test]
     public async Task GetCurrencyName_ReturnsAllCurrencies()
     {
-        using var context = new CathaybkHWDBContext(dbContextOptions);
-        var repository = new CurrencyRepository(context);
-
-        var results = await repository.GetCurrencyName();
+        var results = await _repository.GetCurrencyName();
 
         Assert.That(results.Count(), Is.EqualTo(2));
-        Assert.That(results, Has.Some.Matches<CurrencyNameResult>(x => x.CurrencyCode == "USD" && x.Names.Any(n => n.Name == "Dollar")));
-        Assert.That(results, Has.Some.Matches<CurrencyNameResult>(x => x.CurrencyCode == "EUR" && x.Names.Any(n => n.Name == "Euro")));
+        Assert.That(results, Has.Some.Matches<Domain.Entities.Currency.CurrencyName>(x => x.Code == "USD" && x.Name == "Dollar"));
+        Assert.That(results, Has.Some.Matches<Domain.Entities.Currency.CurrencyName>(x => x.Code == "EUR" && x.Name == "Euro"));
     }
 
     [Test]
     public async Task GetCurrencyName_WithSeededData_ReturnsCorrectCurrencies()
     {
-        using var dbContext = new CathaybkHWDBContext(dbContextOptions);
-        var repository = new CurrencyRepository(dbContext);
-
-        var results = await repository.GetCurrencyName();
+        var results = await _repository.GetCurrencyName();
 
         Assert.That(results.Count(), Is.EqualTo(2));
-        Assert.That(results.Any(r => r.CurrencyCode == "USD" && r.Names.Any(n => n.Name == "Dollar")));
-        Assert.That(results.Any(r => r.CurrencyCode == "EUR" && r.Names.Any(n => n.Name == "Euro")));
+        Assert.That(results.Any(r => r.Code == "USD" && r.Name == "Dollar"));
+        Assert.That(results.Any(r => r.Code == "EUR" && r.Name == "Euro"));
+    }
+
+    [Test]
+    public async Task GetCurrencyNameByCodeAndLanguage_ReturnsCorrectEntity()
+    {
+        var result = await _repository.GetCurrencyNameByCodeAndLanguage("USD", "en");
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Name, Is.EqualTo("Dollar"));
+    }
+
+    [Test]
+    public async Task AddCurrencyName_AddsSuccessfully()
+    {
+        await _repository.AddCurrencyName(new Domain.Entities.Currency.CurrencyName { Code = "JPY", Language = "jp", Name = "Yen" });
+        var result = await _repository.GetCurrencyNameByCodeAndLanguage("JPY", "jp");
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Name, Is.EqualTo("Yen"));
+    }
+
+    [Test]
+    public async Task UpdateCurrencyName_UpdatesSuccessfully()
+    {
+        var currencyName = await _repository.GetCurrencyNameByCodeAndLanguage("USD", "en");
+        currencyName.Name = "US Dollar Updated";
+        await _repository.UpdateCurrencyName(currencyName);
+
+        var updatedCurrencyName = await _repository.GetCurrencyNameByCodeAndLanguage("USD", "en");
+        Assert.That(updatedCurrencyName.Name, Is.EqualTo("US Dollar Updated"));
+    }
+
+    [Test]
+    public async Task DeleteCurrencyName_DeletesSuccessfully()
+    {
+        await _repository.DeleteCurrencyName("EUR", "en");
+        var result = await _repository.GetCurrencyNameByCodeAndLanguage("EUR", "en");
+        Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void AddCurrencyName_ThrowsException_WhenDuplicate()
+    {
+        Assert.ThrowsAsync<DbUpdateException>(async () => {
+            await _repository.AddCurrencyName(new Domain.Entities.Currency.CurrencyName { Code = "USD", Language = "en", Name = "Duplicate Dollar" });
+        });
+    }
+
+    [Test]
+    public async Task UpdateCurrencyName_ThrowsException_WhenNotFound()
+    {
+        var nonExistingCurrencyName = new Domain.Entities.Currency.CurrencyName { Code = "XYZ", Language = "en", Name = "Not Exists" };
+
+        await _repository.UpdateCurrencyName(nonExistingCurrencyName);
+
+        var results = await _repository.GetCurrencyName();
+        Assert.That(results.Any(r => r.Code == "XYZ"), Is.False);
     }
 }

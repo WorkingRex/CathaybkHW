@@ -4,6 +4,6 @@ namespace CathaybkHW.Domain.DomainServices.Currency.Interface;
 
 public interface ICurrencyService
 {
-    ExchangeRateResult GetExchangeRate(string fromCurrency, string toCurrency);
-    CurrencyNameResult GetCurrencyName(string code);
+    ExchangeRate GetExchangeRate(string fromCurrency, string toCurrency);
+    CurrencyName GetCurrencyName(string code);
 }

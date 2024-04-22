@@ -21,7 +21,7 @@ public class ExchangeRateProvider : IExchangeRateProvider
         _configuration = configuration;
     }
 
-    async public Task<IEnumerable<ExchangeRateResult>> GetRate()
+    async public Task<IEnumerable<ExchangeRate>> GetRate()
     {
         var response = await _httpClient.GetAsync(_configuration.GetValue<string>("CoindeskAPI:CurrentPrice")!);
         response.EnsureSuccessStatusCode();
@@ -35,7 +35,7 @@ public class ExchangeRateProvider : IExchangeRateProvider
 
         var lastUpdated = DateTime.Parse(responseData.Time.UpdatedISO);
 
-        var result = responseData.Bpi.Select(x => new ExchangeRateResult
+        var result = responseData.Bpi.Select(x => new ExchangeRate
         {
             CurrencyCode = x.Value.Code,
             Rate = x.Value.RateFloat,

@@ -1,6 +1,6 @@
 ﻿namespace CathaybkHW.Domain.DTOs.Currency;
 
-public class ExchangeRateResult
+public class ExchangeRate
 {
     public string CurrencyCode { get; set; } = null!;
     public decimal Rate { get; set; }
