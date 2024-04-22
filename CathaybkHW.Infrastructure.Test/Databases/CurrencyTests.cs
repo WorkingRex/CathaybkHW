@@ -17,7 +17,7 @@ internal class CurrencyTests
         connection.Open();
 
         dbContextOptions = new DbContextOptionsBuilder<CathaybkHWDBContext>()
-            .UseSqlite(connection) // 使用 SQLite 資料庫
+            .UseSqlite(connection)
             .Options;
 
         using var context = new CathaybkHWDBContext(dbContextOptions);
