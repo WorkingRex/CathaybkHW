@@ -17,6 +17,10 @@ namespace CathaybkHW.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// 呼叫 coindesk 的 API 組合貨幣名稱
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("CurrencyRateList")]
         public async Task<IEnumerable<CurrencyInfoResult>> GetCurrencyInfo()
         {
@@ -25,6 +29,11 @@ namespace CathaybkHW.Controllers
             return result;
         }
 
+        /// <summary>
+        /// 新增貨幣名稱
+        /// </summary>
+        /// <param name="currencyName"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> CreateCurrencyName([FromBody] CurrencyName currencyName)
         {
@@ -32,6 +41,12 @@ namespace CathaybkHW.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// 取得貨幣名稱
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
         [HttpGet("{code}/{language}")]
         public async Task<ActionResult<CurrencyName>> GetCurrencyName(string code, string language)
         {
@@ -41,6 +56,11 @@ namespace CathaybkHW.Controllers
             return currencyName;
         }
 
+        /// <summary>
+        /// 更新貨幣名稱
+        /// </summary>
+        /// <param name="currencyName"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateCurrencyName([FromBody] CurrencyName currencyName)
         {
@@ -48,6 +68,12 @@ namespace CathaybkHW.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// 刪除貨幣名稱
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
         [HttpDelete("{code}/{language}")]
         public async Task<IActionResult> DeleteCurrencyName(string code, string language)
         {
