@@ -31,6 +31,7 @@ public class CurrencyInfoListQueryHandler : IRequestHandler<CurrencyInfoListQuer
             from rate in currencyRates
             join name in currencyNameGroup on rate.CurrencyCode equals name.Key into temps
             from name in temps.DefaultIfEmpty()
+            orderby rate.CurrencyCode
             select new CurrencyInfoResult
             {
                 Code = rate.CurrencyCode,
