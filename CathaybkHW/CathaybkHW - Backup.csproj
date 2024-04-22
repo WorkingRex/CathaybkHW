@@ -29,8 +29,4 @@
     <ProjectReference Include="..\CathaybkHW.Infrastructure\CathaybkHW.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="..\.dockerignore" />
-  </ItemGroup>
-
 </Project>

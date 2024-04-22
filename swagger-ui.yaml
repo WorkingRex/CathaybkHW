@@ -1,0 +1,162 @@
+openapi: 3.0.1
+info:
+  title: CathaybkHW
+  version: v1
+paths:
+  /api/Currency/CurrencyRateList:
+    get:
+      tags:
+        - Currency
+      summary: 呼叫 coindesk 的 API 組合貨幣名稱
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CurrencyInfoResult"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CurrencyInfoResult"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CurrencyInfoResult"
+  /api/Currency:
+    post:
+      tags:
+        - Currency
+      summary: 新增貨幣名稱
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CurrencyName"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CurrencyName"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CurrencyName"
+      responses:
+        "200":
+          description: Success
+    put:
+      tags:
+        - Currency
+      summary: 更新貨幣名稱
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CurrencyName"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/CurrencyName"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/CurrencyName"
+      responses:
+        "200":
+          description: Success
+  /api/Currency/{code}/{language}:
+    get:
+      tags:
+        - Currency
+      summary: 取得貨幣名稱
+      parameters:
+        - name: code
+          in: path
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: language
+          in: path
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/CurrencyName"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrencyName"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/CurrencyName"
+    delete:
+      tags:
+        - Currency
+      summary: 刪除貨幣名稱
+      parameters:
+        - name: code
+          in: path
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: language
+          in: path
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+components:
+  schemas:
+    CurrencyInfoResult:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        exchangeRate:
+          type: number
+          format: double
+        updatedTime:
+          type: string
+          nullable: true
+        names:
+          type: array
+          items:
+            $ref: "#/components/schemas/CurrencyNameResult"
+          nullable: true
+      additionalProperties: false
+    CurrencyName:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        language:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CurrencyNameResult:
+      type: object
+      properties:
+        language:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
