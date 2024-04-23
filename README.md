@@ -58,4 +58,9 @@
     docker run --name CathaybkHW -p 8080:8080 -e ConnectionStrings__CathaybkHWDB={{CathaybkHW}} -d myapp:latest
     ```
 
-7. ~~加解密技術應用 (AES/RSA…etc.)~~
+7. 加解密技術應用 (AES/RSA…etc.)
+
+    這邊使用 JWT 搭配 HMAC-SHA256 來實作 Token 的加解密，並且使用 HMAC-SHA256 來簽發 Token，所有與幣別名稱相關的 API 都需要 Token 才能存取，可以透過以下 API 來取得 Token
+    ```
+    GET /api/Auth/GetToken
+    ```
