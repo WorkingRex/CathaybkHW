@@ -33,7 +33,9 @@
     1. API 被呼叫的 request and response body log 用 Middleware 實作
     2. 呼叫外部 API 的 request and response body log 用 AddHttpMessageHandler 實作
 
-2. ~~Error handling 處理 API response~~
+2. Error handling 處理 API response
+    - 使用 Middleware 實作，可以在 Middleware 指定特定的 Exception 類型，並且回傳特定的錯誤訊息
+
 3. swagger-ui
     
     1. 以 Debug mode 啟動，並訪問 `https://localhost:44303/swagger/index.html` 查看 API 文件
