@@ -2,8 +2,37 @@
 
 這邊使用 DDD 架構來實作一個簡單的幣別轉換 API，並且使用 Entity Framework Core 來存取資料庫，並且使用 LocalDB 作為資料庫。
 
-# 實作加分題
-1. ~~印出所有 API 被呼叫以及呼叫外部 API 的 request and response body log~~
+## 建立幣別與其對應名稱的資料表
+
+1. 直接執行 SQL 語法
+    ```sql
+    CREATE TABLE [CurrencyNames] (
+        [Code] nvarchar(450) NOT NULL,
+        [Language] nvarchar(450) NOT NULL,
+        [Name] nvarchar(max) NOT NULL,
+        CONSTRAINT [PK_CurrencyNames] PRIMARY KEY ([Code], [Language])
+    );
+    ```
+
+2. 使用 Entity Framework Core 的 Code First Migration
+    - 使用 Package Manager Console
+        ```Visual Studio
+        Add-Migration InitialCreate
+        Update-Database
+        ```
+    - 使用 dotnet CLI 來執行以下指令
+        ```shell
+        dotnet ef migrations add InitialCreate
+        dotnet ef database update
+        ```
+
+
+
+## 實作加分題
+1. 印出所有 API 被呼叫以及呼叫外部 API 的 request and response body log
+    1. API 被呼叫的 request and response body log 用 Middleware 實作
+    2. 呼叫外部 API 的 request and response body log 用 AddHttpMessageHandler 實作
+
 2. ~~Error handling 處理 API response~~
 3. swagger-ui
     

@@ -39,4 +39,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.AddMiddlewares();
+
 app.Run();
