@@ -48,14 +48,14 @@
 5. design pattern 實作
 
     1. Application 層與 Controller 之間使用中介者模式
-    2. HttpContent 使用工廠模式取得實例
+    2. HttpClient 使用工廠模式取得實例
 
 6. 能夠運行在 Docker
 
     因為在 Docker 中沒辦法使用 LocalDB，因此需要在 Docker run 時指定外部的 DB 連線字串，以下是 Dockerfile 的建置指令
     ```shell
     docker build -t CathaybkHW:latest .
-    docker run --name CathaybkHW -p 8080:8080 -e ConnectionStrings__CathaybkHWDB={{CathaybkHW}} -d myapp:latest
+    docker run --name CathaybkHW -p 8080:8080 -e ConnectionStrings__CathaybkHWDB={{DB_ConnectionStrings__CathaybkHWDB}} -d CathaybkHW:latest
     ```
 
 7. 加解密技術應用 (AES/RSA…etc.)
